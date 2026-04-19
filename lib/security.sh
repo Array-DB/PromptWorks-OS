@@ -16,3 +16,16 @@ apply_shadowlab_baseline() {
     chmod 644 "$HOME/.ssh/id_ed25519.pub" 2>/dev/null || true
     log_success "ShadowLab Networks baseline applied"
 }
+
+
+fix_security_details_home_path() {
+    log_step "Fixing PromptWorks Security Details data directory path"
+
+    sudo mkdir -p /home/justincase/.config
+    sudo chown -R "$USER:$USER" /home/justincase
+
+    mkdir -p "$HOME/.config/promptworks-security-details"
+    ln -sfn "$HOME/.config/promptworks-security-details" /home/justincase/.config/promptworks-security-details
+
+    log_success "PromptWorks Security Details path workaround applied"
+}
