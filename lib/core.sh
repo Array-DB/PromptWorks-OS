@@ -13,10 +13,17 @@ PW_PROJECTS_DIR="$HOME/Projects"
 PW_WORKSPACE_DIR="$HOME/Workspace"
 PW_SYSTEMD_RENDER_DIR="$PW_STATE/rendered-systemd"
 detect_platform() {
-    if [[ ! -f /etc/manjaro-release && ! -f /etc/arch-release ]]; then
-        die "PromptWorks-OS currently supports Manjaro/Arch family only."
+    if [[ -f /etc/manjaro-release || -f /etc/arch-release ]]; then
+        log_success "Platform supported"
+        return 0
     fi
-    log_success "Platform supported"
+
+    if grep -qiE 'manjaro|arch' /etc/os-release 2>/dev/null; then
+        log_success "Platform supported via /etc/os-release"
+        return 0
+    fi
+
+    die "PromptWorks-OS currently supports Manjaro/Arch family only."
 }
 ensure_base_tools() {
     sudo pacman -Sy --noconfirm --needed curl git rsync base-devel jq
