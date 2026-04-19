@@ -3,7 +3,7 @@
     email = array@arraydb.net
 
 [core]
-    editor = code --wait
+    editor = nano
 
 [init]
     defaultBranch = main
