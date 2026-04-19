@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+PW_STATE="$HOME/.config/promptworks-os"
+PW_HOME="$HOME/.local/share/promptworks-os"
+show_status() {
+    echo "PromptWorks-OS status"
+    echo "---------------------"
+    if [[ -f "$PW_STATE/build-info" ]]; then
+        cat "$PW_STATE/build-info"
+    else
+        echo "No build info found"
+    fi
+}
+snapshot_home() {
+    local target="${1:-$HOME/.backup/home-$(date +%F-%H%M%S)}"
+    mkdir -p "$target"
+    rsync -a --exclude ".cache" --exclude ".local/share/Trash" --exclude "node_modules" --exclude ".venv" "$HOME/" "$target/"
+    echo "Snapshot created at $target"
+}
+firmware_check() {
+    local repo_dir="$PW_HOME/firmware-works"
+    if [[ -d "$repo_dir/.git" ]]; then
+        git -C "$repo_dir" fetch --all --tags
+        git -C "$repo_dir" status -sb
+    else
+        echo "Firmware-Works repo not installed"
+    fi
+}
+firmware_apply() {
+    local repo_dir="$PW_HOME/firmware-works"
+    if [[ -d "$repo_dir/.git" ]]; then
+        git -C "$repo_dir" fetch --all --tags
+        git -C "$repo_dir" pull --ff-only
+    fi
+    if [[ -x "$repo_dir/apply-updates.sh" ]]; then
+        bash "$repo_dir/apply-updates.sh"
+    else
+        echo "No apply-updates.sh found"
+        exit 1
+    fi
+}
+build_release() {
+    if [[ -f "$PW_STATE/build-info" ]]; then
+        grep '^PW_BUILD_NR=' "$PW_STATE/build-info" || true
+    else
+        echo "No build metadata found"
+    fi
+}
+case "${1:-}" in
+    status) show_status ;;
+    snapshot) snapshot_home "${2:-}" ;;
+    firmware)
+        case "${2:-}" in
+            check) firmware_check ;;
+            apply) firmware_apply ;;
+            *) echo "Usage: pw firmware {check|apply}" ; exit 1 ;;
+        esac
+        ;;
+    build) build_release ;;
+    *)
+        cat <<EOB
+Usage:
+  pw status
+  pw snapshot [target-dir]
+  pw firmware check
+  pw firmware apply
+  pw build
+EOB
+        ;;
+esac

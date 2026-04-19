@@ -1,0 +1,6 @@
+[Unit]
+Description=PromptWorks-OS Health Check
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -lc '__PW_PROJECTS_DIR__/PromptWorks-OS/scripts/verify-system.sh'

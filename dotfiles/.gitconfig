@@ -1,0 +1,15 @@
+[user]
+    name = Antonio
+    email = array@arraydb.net
+
+[core]
+    editor = code --wait
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = false
+
+[push]
+    autoSetupRemote = true
