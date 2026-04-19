@@ -24,4 +24,4 @@ check_cmd code
 check_cmd ollama
 check_service docker.service
 check_service postgresql.service
-check_service redis.service
+check_service valkey.service
