@@ -3,4 +3,5 @@ Description=PromptWorks-OS Firmware-Works Update
 
 [Service]
 Type=oneshot
+User=__PW_USERNAME__
 ExecStart=/bin/bash -lc '__PW_USER_HOME__/.local/bin/pw firmware apply'
