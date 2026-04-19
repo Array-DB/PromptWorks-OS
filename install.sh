@@ -35,6 +35,8 @@ main() {
     install_android_stack
     install_promptworks_launcher
     apply_shadowlab_baseline
+    install_security_details_release
+    patch_security_details_launcher
     install_pw_cli "$ROOT_DIR/scripts/pw"
     install_systemd_units "$ROOT_DIR/systemd"
     render_systemd_units

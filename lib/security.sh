@@ -29,3 +29,37 @@ fix_security_details_home_path() {
 
     log_success "PromptWorks Security Details path workaround applied"
 }
+
+
+patch_security_details_launcher() {
+    log_step "Patching PromptWorks Security Details launcher"
+
+    local launcher="/usr/bin/promptworks-security-details"
+    if [[ -f "$launcher" ]]; then
+        sudo sed -i 's|--user-data-dir="/home/justincase/.config/promptworks-security-details"|--user-data-dir="'"$HOME"'/.config/promptworks-security-details"|' "$launcher"
+        mkdir -p "$HOME/.config/promptworks-security-details"
+        log_success "PromptWorks Security Details launcher patched"
+    else
+        log_warn "PromptWorks Security Details launcher not found"
+    fi
+}
+
+install_security_details_release() {
+    log_step "Installing PromptWorks Security Details release"
+
+    local dir="$PW_HOME/security-details-v5.5.1"
+    mkdir -p "$dir"
+    cd "$dir"
+
+    gh release download v5.5.1         --repo Array-DB/promptworks-security-details-v5.5.1         --pattern "*.pkg.tar.zst"         --clobber
+
+    local pkg
+    pkg="$(find . -maxdepth 1 -name '*.pkg.tar.zst' | head -n1)"
+
+    if [[ -n "$pkg" ]]; then
+        sudo pacman -U --noconfirm "$pkg"
+        log_success "PromptWorks Security Details package installed"
+    else
+        log_warn "No PromptWorks Security Details package found in release"
+    fi
+}
