@@ -2,43 +2,45 @@
 
 PromptWorks-OS is a reproducible developer operating system layer for Manjaro GNOME.
 
-## Naming
-- PromptWorks-OS = machine platform
-- Firmware-Works = firmware-style update channel
-- ShadowLab Networks = security and hardening layer
+## Stack
+- PromptWorks-OS = machine bootstrap layer
+- Firmware-Works = firmware-style update lane
+- ShadowLab Networks = security and hardening identity
 
-## Features
-- one-command bootstrap
-- package manifests
-- service activation
-- AI tooling install
-- Android tooling install
-- PromptWorks launcher sync
-- ShadowLab baseline hardening
-- firmware update lane
-- health checks
-- snapshot command
-- restore support
+## What it does
+- installs core development packages
+- installs AUR packages
+- applies user dotfiles
+- enables required system services
+- installs AI tooling
+- installs Android tooling
+- syncs PromptWorks launcher
+- applies ShadowLab baseline hardening
+- syncs Firmware-Works
+- installs health-check and update timers
+
+## Repository layout
+- install.sh = single entrypoint
+- config/ = machine definition
+- lib/ = installer modules
+- scripts/pw = local control CLI
+- systemd/ = timer and service templates
+- dotfiles/ = shell and editor defaults
 
 ## Requirements
-- Manjaro or Arch-based system
+- Manjaro or Arch-based Linux
 - sudo access
 - internet access
-- GitHub SSH configured if using private repos
+- GitHub SSH configured
 
 ## Install
-git clone git@github.com:Array-DB/PromptWorks-OS.git
+git clone git@github-pwos:Array-DB/PromptWorks-OS.git
 cd PromptWorks-OS
 ./install.sh
 
-## Firmware updates
-The Firmware-Works repo should contain this file at repo root:
+## Notes
+This is the v1 bootstrap foundation. First-run testing may still expose package-name or environment-specific issues. That is normal for early field validation.
 
-apply-updates.sh
-
-## Release example
-git add .
-git commit -m "PromptWorks-OS v1 bootstrap"
-git tag -a promptworks-os-v1.0.0 -m "PromptWorks-OS v1.0.0"
-git push origin main
-git push origin promptworks-os-v1.0.0
+## Release
+Current release tag:
+- promptworks-os-v1.0.0

@@ -14,7 +14,12 @@ cat <<'EOB'
 ========================================
 EOB
 }
-require_not_root() { [[ "${EUID}" -eq 0 ]] && die "Run as your normal user, not root."; }
+require_not_root() {
+    if [[ "${EUID}" -eq 0 ]]; then
+        die "Run as your normal user, not root."
+    fi
+    return 0
+}
 require_sudo() { sudo -v || die "Sudo authentication failed."; }
 command_exists() { command -v "$1" >/dev/null 2>&1; }
 ensure_file_exists() { [[ -f "$1" ]] || die "Missing required file: $1"; }
