@@ -7,6 +7,7 @@ source "$ROOT_DIR/lib/packages.sh"
 source "$ROOT_DIR/lib/services.sh"
 source "$ROOT_DIR/lib/dotfiles.sh"
 source "$ROOT_DIR/lib/security.sh"
+source "$ROOT_DIR/lib/security_repo.sh"
 source "$ROOT_DIR/lib/restore.sh"
 source "$ROOT_DIR/lib/updates.sh"
 source "$ROOT_DIR/lib/ai.sh"
@@ -40,6 +41,7 @@ main() {
     enable_pw_timers
     maybe_restore_home
     sync_firmware_repo
+    sync_security_repo
     verify_system "$ROOT_DIR/scripts/verify-system.sh"
     log_success "PromptWorks-OS installation complete"
     echo
